@@ -6,11 +6,14 @@ import {
   View,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {Form} from '@unform/mobile';
 import {FormHandles} from '@unform/core';
+
+import api from '../../services/api';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -43,8 +46,15 @@ const SignUp: React.FC = () => {
 
             <Form
               ref={formRef}
-              onSubmit={(data) => {
+              onSubmit={async (data) => {
                 console.log(data, '-> submitted signup');
+                await api.post('/users', data);
+                Alert.alert(
+                  'Cadastro realizado com sucesso!',
+                  'Você já pode fazer login na aplicação.',
+                );
+
+                navigation.goBack();
               }}>
               <Input
                 autoCapitalize="words"
